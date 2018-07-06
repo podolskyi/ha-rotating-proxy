@@ -8,10 +8,6 @@ Start a proxy server using http proxy
 
 ### start the application
 
-     ```bash
-      docker pull brianstech/docker-rotating-proxy
-     ```
-
 1. run the proxy
 
      ```bash
