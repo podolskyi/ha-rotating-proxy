@@ -12,7 +12,7 @@ defaults
     timeout connect 10s
     timeout client  50s
     timeout server  50s
-    # timeout check   3s
+    timeout check   3s
     retries 15
 
 listen stats
@@ -39,7 +39,6 @@ frontend proxy_frontend
 backend proxy_backend
     mode http
     balance roundrobin
-    # option httpchk HEAD https://www.sde.co.ke/ HTTP/1.1\r\nHost:\ www.sde.co.ke
     # http-check expect status 200
     {% for backend in backends -%}
     server proxy{{ loop.index }}  {{ backend.ip }}:{{ backend.port }} check
