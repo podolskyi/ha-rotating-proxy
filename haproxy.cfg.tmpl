@@ -13,7 +13,7 @@ defaults
     timeout client  50s
     timeout server  50s
     timeout check   3s
-    retries 15
+    retries 20
 
 listen stats
     bind            *:4444
@@ -34,12 +34,10 @@ frontend proxy_frontend
     bind *:11111
     default_backend proxy_backend
     mode http
-    option forwardfor
 
 backend proxy_backend
     mode http
     balance roundrobin
-    # http-check expect status 200
     {% for backend in backends -%}
     server proxy{{ loop.index }}  {{ backend.ip }}:{{ backend.port }} check
     {% endfor %}

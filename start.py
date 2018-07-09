@@ -29,8 +29,7 @@ def create_proxy_config(backends):
 
 def preprocess_proxy_list():
     proxies_list = read_proxy_config(PROXY_PATH)
-
-    return [{'id': proxy['ip'], 'port': proxy['port']} for proxy in proxies_list]
+    return proxies_list
 
 
 def read_proxy_config(file_name):
@@ -40,7 +39,7 @@ def read_proxy_config(file_name):
             if not line.strip():
                 continue
             ip = line.strip().split(":")[0]
-            port = line.strip().split(":")[0]
+            port = line.strip().split(":")[1]
             p = {'ip': ip, "port": port}
             proxies.append(p)
     return proxies

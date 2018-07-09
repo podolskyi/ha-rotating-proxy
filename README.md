@@ -22,4 +22,4 @@ Start a proxy server using http proxy
 1. set you client to use
 
         - http proxy: http://localhost:11111
-        - https proxy: https://localhost:11111
+        - https proxy: http://localhost:11111
