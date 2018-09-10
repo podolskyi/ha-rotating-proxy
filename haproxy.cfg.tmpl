@@ -15,6 +15,8 @@ defaults
     timeout server  50s
     timeout check   3s
     retries 20
+    log-format %Ci:%Cp [%t] %ft %b/%s %Tq/%Tw/%Tc/%Tr/%Tt %st %B %cc
+           %cs %tsc %ac/%fc/%bc/%sc/%rc %sq/%bq %hr %hs %{+Q}r
 
 listen stats
     bind            *:4444
@@ -32,12 +34,16 @@ listen stats
 
 frontend proxy_frontend
     bind *:11111
+    option forceclose
     default_backend proxy_backend
     mode http
 
 backend proxy_backend
     mode http
+    option forceclose
     balance roundrobin
+    capture request  header Host len 20
+    log global
     {% for backend in backends -%}
     server proxy{{ backend.ip }}:{{ backend.port }}  {{ backend.ip }}:{{ backend.port }} check
     {% endfor %}
