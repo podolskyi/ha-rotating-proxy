@@ -9,6 +9,7 @@ global
 
 defaults
     mode http
+    option forceclose
     timeout connect 10s
     timeout client  50s
     timeout server  50s
@@ -25,7 +26,6 @@ listen stats
     timeout connect 4s
     timeout queue   10s
     stats enable
-    stats auth admin:admin
     stats refresh   30s
     stats show-node
     stats uri /haproxy?stats
