@@ -9,6 +9,7 @@ global
 
 defaults
     mode http
+    option forceclose
     timeout connect 10s
     timeout client  50s
     timeout server  50s
@@ -25,19 +26,22 @@ listen stats
     timeout connect 4s
     timeout queue   10s
     stats enable
-    stats auth admin:admin
-    stats refresh   30s
+    # stats refresh   30s
     stats show-node
     stats uri /haproxy?stats
 
 frontend proxy_frontend
     bind *:11111
+    option forceclose
     default_backend proxy_backend
     mode http
 
 backend proxy_backend
     mode http
+    option forceclose
     balance roundrobin
+    capture request  header Host len 20
+    log global
     {% for backend in backends -%}
     server proxy{{ backend.ip }}:{{ backend.port }}  {{ backend.ip }}:{{ backend.port }} check
     {% endfor %}
