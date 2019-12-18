@@ -12,7 +12,7 @@ Start a proxy server using http proxy
 
      ```bash
         docker build -t ha-proxy .
-        docker run -d -p 11111:11111 -p 4444:4444 --name=rotating-proxy ha-proxy
+        docker run -d -p 11111:11111 -p 4444:4444 --name=rotating-proxy ha-proxy  --log-driver json-file --log-opt max-size=10m
      ```
 
 1. access the proxy stats at

@@ -1,6 +1,6 @@
 global
     daemon
-    maxconn 256
+    maxconn 500
     chroot      /var/lib/haproxy
     pidfile     /var/run/haproxy.pid
     user        haproxy
@@ -9,6 +9,7 @@ global
 
 defaults
     mode http
+    option forceclose
     timeout connect 10s
     timeout client  50s
     timeout server  50s
@@ -19,25 +20,37 @@ listen stats
     bind            *:4444
     mode            http
     log             global
-    maxconn 200
+    maxconn 500
     timeout client  3s
     timeout server  3s
     timeout connect 4s
     timeout queue   10s
     stats enable
-    stats auth admin:admin
-    stats refresh   30s
+    # stats refresh   30s
     stats show-node
     stats uri /haproxy?stats
 
 frontend proxy_frontend
     bind *:11111
+    option forceclose
     default_backend proxy_backend
     mode http
 
+frontend proxy_frontend_1
+    bind *:9200
+    mode http
+    default_backend proxy_backend_1
+
 backend proxy_backend
     mode http
+    option forceclose
     balance roundrobin
+    capture request  header Host len 20
+    log global
     {% for backend in backends -%}
     server proxy{{ backend.ip }}:{{ backend.port }}  {{ backend.ip }}:{{ backend.port }} check
     {% endfor %}
+
+backend proxy_backend_1
+    balance roundrobin
+    server market-cluster market-cluster.trendalytics.co:9200

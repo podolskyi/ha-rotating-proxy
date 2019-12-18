@@ -9,6 +9,6 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-EXPOSE 4444 11111
+EXPOSE 4444 11111 9200
 
 CMD ["python", "start.py"]
